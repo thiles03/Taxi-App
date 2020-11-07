@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "38a8d2db-58b1-4d29-a2a1-c5b795d3a8cd",
+		"name": "TM352 TMA03",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Testing the nominatim service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://nominatim.openstreetmap.org/search/MK7%206AA?format=json&countrycode=gb",
+					"protocol": "http",
+					"host": [
+						"nominatim",
+						"openstreetmap",
+						"org"
+					],
+					"path": [
+						"search",
+						"MK7%206AA"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "countrycode",
+							"value": "gb"
+						}
+					]
+				},
+				"description": "Mashing up with OpenStreetMaps REST API\r\n\r\nSince the orders API only defines the location of the orders/requests by a street name, to display the geolocation on the map you need to translate these street names to geolocations, which are represented by latitude and longitude pairs. \r\n\r\nSince HERE Maps does not provide a REST API for this purpose, we will use another REST service, that from OpenStreetMap.\r\nThe URL end-point of the OpenStreetMaps is typically:\r\n\r\nhttp://nominatim.openstreetmap.org/search/<ADDRESS>?format=json&countrycode=gb\r\n\r\nwhere you can fill in the URL by the ‘address’ for which you want to look up the geolocation.\r\n\r\nNote that if your application repeatedly calls this URL in a short space of time, then your access to the API will be automatically blocked for a period. So if your code suddenly stops working this is the most likely cause. Double-check the number of calls your code is making and find an appropriate way to restrict them. Whilst debugging other parts of your code it can be beneficial to temporarily replace the call to OpenStreetMap with a hard-coded value. \r\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all orders for OUCU",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders?oucu=cdt54",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "oucu",
+							"value": "cdt54"
+						}
+					]
+				},
+				"description": "GET with no ID will retrieve all the orders. "
+			},
+			"response": []
+		},
+		{
+			"name": "Get details of a specific order",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders/111929?oucu=cdt54",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders",
+						"111929"
+					],
+					"query": [
+						{
+							"key": "oucu",
+							"value": "cdt54"
+						}
+					]
+				},
+				"description": "GET with an ID value will retrieve just the single record matching the ID. If an ID is provided and there is no matching record then an error is returned. A successful GET with an ID returns the record with that ID. "
+			},
+			"response": []
+		},
+		{
+			"name": "Post a new order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "oucu",
+							"value": "cdt54",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Open University",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "2019-12-05 18:09:00",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders"
+					]
+				},
+				"description": "POST will create a new record. The record should have appropriate values for the database fields (oucu, type, address, start and end) but no ID should be passed to the API because the database will generate a new unique ID value for the record. The value of OUCU is your OUCU. The value of type is 0 for an order or 1 for a request. The start and end values are datetime, and end is required only when type is 0. "
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a specific order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders/126809?oucu=cdt54",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders",
+						"126809"
+					],
+					"query": [
+						{
+							"key": "oucu",
+							"value": "cdt54"
+						}
+					]
+				},
+				"description": "A DELETE will remove a single record from the database. The unique ID of the record must be provided. "
+			},
+			"response": []
+		},
+		{
+			"name": "Get Matches",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/matches?OUCU=cdt54",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"matches"
+					],
+					"query": [
+						{
+							"key": "OUCU",
+							"value": "cdt54"
+						}
+					]
+				},
+				"description": "A taxi_matches record represents a matching pair of an order and a request. Since it is a derived view, the API only provides the GET operation. "
+			},
+			"response": []
+		},
+		{
+			"name": "Post a new order (Order)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "oucu",
+							"value": "cdt54",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Open University",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "2019-12-05 18:09:00",
+							"type": "text"
+						},
+						{
+							"key": "end",
+							"value": "2019-12-05 19:09:00",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders"
+					]
+				},
+				"description": "Note this is an order - ie a time in which a taxi could depart"
+			},
+			"response": []
+		},
+		{
+			"name": "Post a new order (Request)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "oucu",
+							"value": "cdt54",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Open University",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "2019-12-05 18:09:00",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://137.108.92.9/openstack/taxi/orders",
+					"protocol": "http",
+					"host": [
+						"137",
+						"108",
+						"92",
+						"9"
+					],
+					"path": [
+						"openstack",
+						"taxi",
+						"orders"
+					]
+				},
+				"description": "Note this is a request, ie a time when somebody wants to depart"
+			},
+			"response": []
+		}
+	]
+}
